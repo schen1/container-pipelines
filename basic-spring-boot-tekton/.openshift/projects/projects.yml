@@ -1,27 +1,69 @@
 apiVersion: v1
 kind: List
 items:
-- apiVersion: project.openshift.io/v1
-  kind: ProjectRequest
+- kind: ProjectRequest
+  apiVersion: v1
   metadata:
     name: basic-spring-boot-build
     creationTimestam: null
   displayName: Spring Rest App - Build
-- apiVersion: project.openshift.io/v1
-  kind: ProjectRequest
+- kind: ProjectRequest
+  apiVersion: v1
   metadata:
     name: basic-spring-boot-dev
     creationTimestam: null
   displayName: Spring Rest App - Dev
-- apiVersion: project.openshift.io/v1
-  kind: ProjectRequest
+- kind: ProjectRequest
+  apiVersion: v1
   metadata:
     name: basic-spring-boot-stage
     creationTimestam: null
   displayName: Spring Rest App - Stage
-- apiVersion: project.openshift.io/v1
-  kind: ProjectRequest
+- kind: ProjectRequest
+  apiVersion: v1
   metadata:
     name: basic-spring-boot-prod
     creationTimestam: null
   displayName: Spring Rest App - Prod
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    labels:
+    name: pipeline_edit
+    namespace: basic-spring-boot-dev
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: edit
+  subjects:
+  - kind: ServiceAccount
+    name: pipeline
+    namespace: basic-spring-boot-build
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    labels:
+    name: pipeline_edit
+    namespace: basic-spring-boot-stage
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: edit
+  subjects:
+  - kind: ServiceAccount
+    name: pipeline
+    namespace: basic-spring-boot-build
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    labels:
+    name: pipeline_edit
+    namespace: basic-spring-boot-prod
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: edit
+  subjects:
+  - kind: ServiceAccount
+    name: pipeline
+    namespace: basic-spring-boot-build
