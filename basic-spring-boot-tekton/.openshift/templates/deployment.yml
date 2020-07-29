@@ -4,11 +4,11 @@ labels:
   template: basic-spring-boot
 metadata:
   annotations:
-    description: Application template for JWS applications built using a Jenkins Pipeline
+    description: Application template for JWS applications built using a Tekton Pipeline
     iconClass: icon-tomcat
     tags: java,spring
     version: 1.2.0
-  name: basic-sprint-boot
+  name: basic-spring-boot
 objects:
 - apiVersion: v1
   kind: Service
@@ -99,25 +99,6 @@ objects:
           name: ${APPLICATION_NAME}:latest
       type: ImageChange
     - type: ConfigChange
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    creationTimestamp: null
-    labels:
-      template: basic-tomcat-template
-    name: ${SA_NAME}_edit
-    namespace: ${NAMESPACE}
-  groupNames: null
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: ClusterRole
-    name: edit
-  subjects:
-  - kind: ServiceAccount
-    name: ${SA_NAME}
-    namespace: ${SA_NAMESPACE}
-  userNames:
-  - system:serviceaccount:${SA_NAMESPACE}:${SA_NAME}
 parameters:
 - description: The name for the application.
   name: APPLICATION_NAME
@@ -125,13 +106,6 @@ parameters:
   value: jws-app
 - description: The namespace to deploy into
   name: NAMESPACE
-  required: true
-- description: Name of a service account that can deploy to this project
-  name: SA_NAME
-  required: true
-  value: tekton
-- description: Namespace of service account that can deploy to this project
-  name: SA_NAMESPACE
   required: true
 - description: 'Custom hostname for http service route.  Leave blank for default hostname,
     e.g.: <application-name>-<project>.<default-domain-suffix>'
